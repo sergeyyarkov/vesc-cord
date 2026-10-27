@@ -1,0 +1,21 @@
+{
+    "configurations": [
+        {
+            "name": "CH32V003",
+            "compilerPath": "/opt/wch/MRS_Toolchain/RISC-V Embedded GCC15/bin/riscv32-wch-elf-gcc",
+            "compilerArgs": [
+                "-march=rv32ec_zicsr",
+                "-mabi=ilp32e",
+                "-Werror=implicit-function-declaration"
+            ],
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/opt/wch/CH32V003EVT/EVT/EXAM/SRC/Core/**",
+                "/opt/wch/CH32V003EVT/EVT/EXAM/SRC/Peripheral/inc/**"
+            ],
+            "cStandard": "gnu11",
+            "intelliSenseMode": "linux-gcc-arm"
+        }
+    ],
+    "version": 4
+}

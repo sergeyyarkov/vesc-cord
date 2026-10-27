@@ -1,0 +1,33 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Clean and build (prod)",
+      "type": "shell",
+      "command": "make clean && make",
+      "problemMatcher": ["$gcc"],
+      "group": "build",
+      "presentation": {
+        "close": true,
+        "showReuseMessage": false
+      }
+    },
+    {
+      "label": "Clean and build (debug)",
+      "type": "shell",
+      "command": "make clean && make DEBUG=true",
+      "problemMatcher": ["$gcc"],
+      "group": "build",
+      "presentation": {
+        "close": true,
+        "showReuseMessage": false
+      }
+    },
+    {
+      "label": "Flash",
+      "type": "shell",
+      "command": "make prog_flash",
+      "group": "build",
+    },
+  ]
+}

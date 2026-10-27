@@ -1,0 +1,20 @@
+{
+  "configurations": [
+    {
+      "cwd": "${workspaceRoot}",
+      "executable": "./build/ch32/firmware.elf",
+      "name": "Debug CH32V (WCH-Link)",
+      "request": "launch",
+      "type": "cortex-debug",
+      "servertype": "openocd",
+      "serverpath": "/opt/wch/MRS_Toolchain/OpenOCD/bin/openocd",
+      "gdbPath": "riscv32-wch-elf-gdb",
+      "configFiles": ["/opt/wch/MRS_Toolchain/OpenOCD/bin/wch-riscv.cfg"],
+      "runToEntryPoint": "main",
+      "showDevDebugOutput": "none",
+      "svdFile": "${workspaceFolder}/platform/ch32v00x/CH32V003xx.svd",
+      "preLaunchTask": "Clean and build (debug)",
+      "preLaunchCommands": ["set remotetimeout 5"]
+    }
+  ]
+}
