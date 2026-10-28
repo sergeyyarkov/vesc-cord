@@ -95,3 +95,8 @@ uint32_t Scheduler_GetSysTimeMs(void) {
 
   return time_ms;
 }
+
+void System_Delay_MS(uint32_t ms) {
+  uint32_t start = Scheduler_GetSysTimeMs();
+  while ((Scheduler_GetSysTimeMs() - start) < ms);
+}

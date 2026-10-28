@@ -16,3 +16,4 @@ void Scheduler_DisableTask(Task_t *task);
 void Scheduler_EnableTask(Task_t *task);
 void Scheduler_Process(void);
 uint32_t Scheduler_GetSysTimeMs(void);
+void System_Delay_MS(uint32_t ms);
