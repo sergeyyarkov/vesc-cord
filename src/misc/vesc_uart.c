@@ -87,26 +87,25 @@ void VescTelemetry_Update(void) {
         if (byte == VESC_UART_PACKET_END_BYTE) {
           if (crc16(res_data, res_length) == res_crc) {
             if (res_data[0] == VESC_UART_PACKET_COMM_GET_VALUES_ID) {
-              VescTelemetryValues.current_in = (float)read_int32_be(res_data[9], 
+              VescTelemetryValues.current_in_x100 = read_int32_be(res_data[9], 
                                                                     res_data[10], 
                                                                     res_data[11], 
-                                                                    res_data[12]) / 100.0f;
+                                                                    res_data[12]);
 
-              VescTelemetryValues.current_motor = (float)read_int32_be(res_data[5], 
+              VescTelemetryValues.current_motor_x100 = read_int32_be(res_data[5], 
                                                                        res_data[6], 
                                                                       res_data[7], 
-                                                                      res_data[8]) / 100.0f;
+                                                                      res_data[8]);
 
-              VescTelemetryValues.v_in = (float)read_uint16_be(res_data[27], 
-                                                               res_data[28]) / 10.0f;
+              VescTelemetryValues.v_in_x10 = read_uint16_be(res_data[27], res_data[28]);
 
-              VescTelemetryValues.temp_mos = (float)read_uint16_be(res_data[1], 
-                                                                   res_data[2]) / 10.0f;
+              VescTelemetryValues.temp_mos_x10 = read_uint16_be(res_data[1], 
+                                                                   res_data[2]);
 
-              VescTelemetryValues.amp_hours = (float)read_int32_be(res_data[29], 
+              VescTelemetryValues.amp_hours_x10000 = read_int32_be(res_data[29], 
                                                                    res_data[30], 
                                                                    res_data[31], 
-                                                                   res_data[32]) / 10000.0f;
+                                                                   res_data[32]);
             }
           }
         }

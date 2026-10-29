@@ -17,15 +17,5 @@ void LED_LiveBitConfigure(void) {
 }
 
 void LED_LiveBitRun(void) {
-  // static uint16_t counter = 0;
-  // char lcd_str[32];
-
-  // counter++;
-
-  // snprintf(lcd_str, sizeof(lcd_str), "%d", counter);
-
-  // LCD1602_SetCursor(0, 0);
-  // LCD1602_Print("Counter:");
-  // LCD1602_Print(lcd_str);
   GPIOD->OUTDR ^= LED_LIVE_BIT_PIN;
 }

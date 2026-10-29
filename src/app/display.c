@@ -1,36 +1,38 @@
 #include "display.h"
 #include <stdio.h>
 #include "drivers/display/lcd1602.h"
+#include "hal/sys_tick.h"
 #include "misc/vesc_uart.h"
 
 void Display_Refresh(void) {
   VescTelemetry_t* telemetry = VescTelemetry_Get();
 
-  char vin_out_int_str[8];
-  char vin_out_frac_str[8];
-  uint16_t vin_int = (uint16_t)telemetry->v_in;
-  uint16_t vin_frac = ((uint16_t)(telemetry->v_in * 10.0f)) % 10;
-
-  char amp_hours_out_int_str[8];
-  char amp_hours_out_frac_str[8];
-  uint16_t amp_hours_int = (uint16_t)telemetry->amp_hours;
-  uint16_t amp_hours_frac = ((uint16_t)(telemetry->amp_hours * 10000.0f)) % 10000;
-
-  snprintf(vin_out_int_str, sizeof(vin_out_int_str), "%d", vin_int);
-  snprintf(vin_out_frac_str, sizeof(vin_out_frac_str), "%d", vin_frac);
-
-  snprintf(amp_hours_out_int_str, sizeof(amp_hours_out_int_str), "%d", amp_hours_int);
-  snprintf(amp_hours_out_frac_str, sizeof(amp_hours_out_frac_str), "%d", amp_hours_frac);
-
+  /**
+   * Battery voltage 
+   */
   LCD1602_SetCursor(0, 0);
   LCD1602_Print("Vin:");
-  LCD1602_Print(vin_out_int_str);
-  LCD1602_Print(".");
-  LCD1602_Print(vin_out_frac_str);
+  LCD1602_PrintFixed(telemetry->v_in_x10, 10);
 
+  /**
+   * Battery current
+   */
+  LCD1602_SetCursor(9, 0);
+  LCD1602_Print("Ib:");
+  LCD1602_PrintFixed(telemetry->current_in_x100, 100);
+
+  /**
+   * Amp hours
+   */
   LCD1602_SetCursor(0, 1);
-  LCD1602_Print("AmpH:");
-  LCD1602_Print(amp_hours_out_int_str);
-  LCD1602_Print(".");
-  LCD1602_Print(amp_hours_out_frac_str);
+  LCD1602_Print("Ahr:");
+  LCD1602_PrintFixed(telemetry->amp_hours_x10000, 10000);
+}
+
+void Display_Init(void) {
+  LCD1602_Init();
+  LCD1602_Clear();
+  LCD1602_Print("vesc_cord\nstartup");
+  SysTick_DelayMS(2000);
+  LCD1602_Clear();
 }

@@ -1,4 +1,5 @@
 #include <ch32v00x_it.h>
+#include "drivers/display/lcd1602.h"
 
 void NMI_Handler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
 void HardFault_Handler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
