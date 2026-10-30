@@ -2,6 +2,8 @@
 #include <stdint.h>
 #include "../platform/ch32v00x/system_ch32v00x.h"
 #include "app/display.h"
+// #include "app/throttle.h"
+#include "hal/adc.h"
 #include "hal/spi.h"
 #include "hal/sys_tick.h"
 #include "hal/usart.h"
@@ -14,6 +16,7 @@ int main(void) {
   SystemInit();
   
   SysTick_Configure();
+  ADC_Configure();
   USART_Configure();
   SPI_Configure();
   LED_LiveBitConfigure();
@@ -22,7 +25,8 @@ int main(void) {
   Scheduler_CreateTask(Display_Refresh, 500);
   Scheduler_CreateTask(LED_LiveBitRun, 300);
   Scheduler_CreateTask(VescTelemetry_Update, 50);
-  // Scheduler_CreateTask(ADC_Conversion, 1);
+  // Scheduler_CreateTask(Throttle_Polling, 5);
+  Scheduler_CreateTask(ADC_Conversion, 1);
 
   while (1) {
     Scheduler_Process();

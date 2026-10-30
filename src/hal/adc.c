@@ -17,6 +17,7 @@ void ADC_Configure(void) {
   GPIOC_InitStructure.GPIO_Mode = GPIO_Mode_AIN;
   GPIO_Init(GPIOC, &GPIOC_InitStructure);
 
+  ADC_DeInit(ADC1);
   ADC_InitStructure.ADC_ContinuousConvMode = DISABLE;
   ADC_InitStructure.ADC_ScanConvMode = DISABLE;
   ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_None;
@@ -25,10 +26,13 @@ void ADC_Configure(void) {
   ADC_InitStructure.ADC_NbrOfChannel = 1;
   ADC_Init(ADC1, &ADC_InitStructure);
 
+  ADC_InjectedSequencerLengthConfig(ADC1, 1);
+
   ADC_RegularChannelConfig(ADC1, ADC_Channel_2, 1, ADC_SampleTime_241Cycles);
+  ADC_InjectedChannelConfig(ADC1, ADC_Channel_8, 1, ADC_SampleTime_241Cycles);
 
   ADC_Calibration_Vol(ADC1, ADC_CALVOL_50PERCENT);
-
+  ADC_AutoInjectedConvCmd(ADC1, ENABLE);
   ADC_Cmd(ADC1, ENABLE);
 
   ADC_ResetCalibration(ADC1);
@@ -38,12 +42,13 @@ void ADC_Configure(void) {
 }
 
 void ADC_Conversion(void) {
-  if (ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == RESET) return;
-
-  uint16_t result = ADC_GetConversionValue(ADC1);
-  raw_values.throttle = result;
-
   ADC_SoftwareStartConvCmd(ADC1, ENABLE);
+
+  while(!ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC));
+  while(!ADC_GetFlagStatus( ADC1, ADC_FLAG_JEOC ) );
+
+  raw_values.throttle = ADC_GetConversionValue(ADC1);
+  raw_values.int_vref = ADC_GetInjectedConversionValue(ADC1, ADC_InjectedChannel_1);
 }
 
 ADC_RawValues *ADC_GetRawValues(void) { return &raw_values; }

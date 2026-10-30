@@ -6,34 +6,7 @@
 #define TASK_PARAM_IS_ONCE_FLAG 0
 #define TASK_PARAM_IS_DISABLED_FLAG 1
 
-// volatile uint32_t sys_time_ms = 0;
-
-// __attribute__((interrupt("WCH-Interrupt-fast"))) void SysTick_Handler(void);
-
 Task_t tasks[TASK_MAX_SIZE];
-
-// void SysTick_Handler(void) {
-//   sys_time_ms++;
-//   SysTick->SR = 0;
-// }
-
-// void Scheduler_Init(void) {
-//   SysTick->SR = 0; // Clear status register
-//   SysTick->CNT = 0; // Clear counter register
-  
-//   NVIC_SetPriority(SysTicK_IRQn, 0x00); // High priority
-//   NVIC_EnableIRQ(SysTicK_IRQn);
-
-//   SysTick->CMP = (SystemCoreClock / 1000) - 1; // 1ms
-
-//   /**
-//    * bit 0 - Start the system counter STK
-//    * bit 1 - Enabling counter interrupts
-//    * bit 2 - STCLK - HCLK for time base
-//    * bit 3 - STRE - Count up to the comparison value and start counting from 0 again
-//    */
-//   SysTick->CTLR |= (1<<0) | (1<<1) | (1<<2) | (1<<3);
-// }
 
 // todo: add Scheduler_SetImmediate to run tasks without system timer check
 
@@ -86,42 +59,3 @@ void Scheduler_Process(void) {
 inline void Scheduler_DisableTask(Task_t *task) { task->flags |= (1 << TASK_PARAM_IS_DISABLED_FLAG); }
 
 inline void Scheduler_EnableTask(Task_t *task) { task->flags &= ~(1 << TASK_PARAM_IS_DISABLED_FLAG); }
-
-// uint32_t Scheduler_GetSysTimeMs(void) {
-//   uint32_t time_ms = 0;
-
-//   time_ms = sys_time_ms;
-
-//   return time_ms;
-// }
-
-// /**
-//  * @brief Returns ticks in of 32bit SysTick register of QingKeV2 core
-//  * 
-//  * @return uint32_t 
-//  */
-// uint32_t System_GetTicks() {
-//   uint32_t ms1, ms2, cnt;
-
-//   do {
-//     ms1 = sys_time_ms;
-//     cnt = SysTick->CNT;
-//     ms2 = sys_time_ms;
-//   } while (ms1 != ms2);
-
-//   uint32_t ticks = (ms1 * ((SystemCoreClock / 1000 ))) + cnt;
-
-//   return ticks;
-// }
-
-// void System_Delay_US(uint32_t us) {
-//   uint32_t desired_ticks = us * (SystemCoreClock / 1000000);
-//   uint32_t start_ticks = System_GetTicks();
-  
-//   while ((System_GetTicks() - start_ticks) < desired_ticks);
-// }
-
-// void System_Delay_MS(uint32_t ms) {
-//   uint32_t start = Scheduler_GetSysTimeMs();
-//   while ((Scheduler_GetSysTimeMs() - start) < ms);
-// }

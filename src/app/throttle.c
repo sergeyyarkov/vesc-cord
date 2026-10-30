@@ -1,6 +1,8 @@
 #include "throttle.h"
 #include "hal/adc.h"
+#include "hal/ppm.h"
 #include "utils/filter_ema.h"
+#include "utils/scale.h"
 
 uint16_t Throttle_GetFilteredValue(void) {
   uint16_t adc_raw_throttle = ADC_GetRawValues()->throttle;
@@ -24,4 +26,11 @@ uint16_t Throttle_GetFilteredValue(void) {
   filtered_val = filter_ema(adc_raw_throttle, filtered_val, alpha);
 
   return (uint16_t)filtered_val;
+}
+
+void Throttle_Polling(void) {
+  uint16_t adc_val = Throttle_GetFilteredValue();
+  uint16_t duty = scale_with_params(adc_val, 950, 250, 0, 100);
+
+  PPM_SetDutyCycle(duty);
 }

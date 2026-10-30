@@ -5,6 +5,7 @@
 
 typedef struct ADC_RawValues {
   volatile uint16_t throttle;
+  volatile uint16_t int_vref;
 } ADC_RawValues;
 
 // #define SETTING_VREF 2.58f  // V

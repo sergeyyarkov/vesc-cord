@@ -1,5 +1,4 @@
 #include "display.h"
-#include <stdio.h>
 #include "drivers/display/lcd1602.h"
 #include "hal/sys_tick.h"
 #include "misc/vesc_uart.h"
