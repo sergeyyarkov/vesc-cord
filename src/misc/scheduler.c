@@ -6,9 +6,10 @@
 #define TASK_PARAM_IS_ONCE_FLAG 0
 #define TASK_PARAM_IS_DISABLED_FLAG 1
 
-Task_t tasks[TASK_MAX_SIZE];
+static Task_t tasks[TASK_MAX_SIZE];
 
 // todo: add Scheduler_SetImmediate to run tasks without system timer check
+// todo: add task execution time measurements for debugging
 
 Task_t *Scheduler_CreateTask(void (*handler)(void), uint32_t interval_ms) {
   for (uint8_t i = 0; i < TASK_MAX_SIZE; i++) {

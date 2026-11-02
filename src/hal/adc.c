@@ -9,13 +9,13 @@ ADC_RawValues raw_values;
 
 void ADC_Configure(void) {
   ADC_InitTypeDef ADC_InitStructure = {0};
-  GPIO_InitTypeDef GPIOC_InitStructure = {0};
+  GPIO_InitTypeDef GPIOD_InitStructure = {0};
 
-  RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1 | RCC_APB2Periph_GPIOC, ENABLE);
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1 | RCC_APB2Periph_GPIOD, ENABLE);
 
-  GPIOC_InitStructure.GPIO_Pin = GPIO_Pin_4;
-  GPIOC_InitStructure.GPIO_Mode = GPIO_Mode_AIN;
-  GPIO_Init(GPIOC, &GPIOC_InitStructure);
+  GPIOD_InitStructure.GPIO_Pin = GPIO_Pin_3;
+  GPIOD_InitStructure.GPIO_Mode = GPIO_Mode_AIN;
+  GPIO_Init(GPIOD, &GPIOD_InitStructure);
 
   ADC_DeInit(ADC1);
   ADC_InitStructure.ADC_ContinuousConvMode = DISABLE;
@@ -28,7 +28,7 @@ void ADC_Configure(void) {
 
   ADC_InjectedSequencerLengthConfig(ADC1, 1);
 
-  ADC_RegularChannelConfig(ADC1, ADC_Channel_2, 1, ADC_SampleTime_241Cycles);
+  ADC_RegularChannelConfig(ADC1, ADC_Channel_4, 1, ADC_SampleTime_241Cycles);
   ADC_InjectedChannelConfig(ADC1, ADC_Channel_8, 1, ADC_SampleTime_241Cycles);
 
   ADC_Calibration_Vol(ADC1, ADC_CALVOL_50PERCENT);

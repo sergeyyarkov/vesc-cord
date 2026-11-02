@@ -30,7 +30,7 @@ uint16_t Throttle_GetFilteredValue(void) {
 
 void Throttle_Polling(void) {
   uint16_t adc_val = Throttle_GetFilteredValue();
-  uint16_t duty = scale_with_params(adc_val, 950, 250, 0, 100);
+  uint16_t duty = scale_with_params(adc_val, 250, 960, 0, 100);
 
   PPM_SetDutyCycle(duty);
 }

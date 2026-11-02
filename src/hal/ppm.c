@@ -4,7 +4,7 @@
 #include "ch32v00x_tim.h"
 #include "utils/scale.h"
 
-#define SERVO_FREQ    60
+#define SERVO_FREQ    50
 #define TICKS_PER_SEC 1000000
 
 #define TIM_PRESCALER    ((SystemCoreClock / TICKS_PER_SEC) - 1)
@@ -30,7 +30,7 @@ void PPM_Configure(void) {
 
   TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
   TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-  TIM_OCInitStructure.TIM_Pulse = 1500;  
+  TIM_OCInitStructure.TIM_Pulse = 1000;  
   TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
   TIM_OC1Init(TIM1, &TIM_OCInitStructure);
   TIM_OC1PreloadConfig(TIM1, TIM_OCPreload_Enable);
@@ -40,6 +40,6 @@ void PPM_Configure(void) {
 }
 
 void PPM_SetDutyCycle(uint8_t value) {
-  uint16_t pulse = scale_with_params(value, 100, 0, 1000, 2000);
+  uint16_t pulse = scale_with_params(value, 0, 100, 1000, 2000);
   TIM_SetCompare1(TIM1, pulse); 
 }

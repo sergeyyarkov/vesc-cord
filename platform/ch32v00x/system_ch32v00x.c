@@ -1,6 +1,7 @@
-#define HSE_VALUE (uint32_t)24000000
+#define HSE_VALUE (uint32_t)16000000
 
 #include <ch32v00x.h>
+#include "core_riscv.h"
 
 /*
  * Uncomment the line corresponding to the desired System clock (SYSCLK)
@@ -12,8 +13,8 @@
 // #define SYSCLK_FREQ_24MHZ_HSI   HSI_VALUE
 // #define SYSCLK_FREQ_48MHZ_HSI 48000000
 // #define SYSCLK_FREQ_8MHz_HSE    8000000
-#define SYSCLK_FREQ_24MHz_HSE   HSE_VALUE
-// #define SYSCLK_FREQ_32MHz_HSE 32000000
+// #define SYSCLK_FREQ_24MHz_HSE   HSE_VALUE
+#define SYSCLK_FREQ_32MHz_HSE 32000000
 // #define SYSCLK_FREQ_48MHz_HSE 48000000
 
 /* Clock Definitions */
@@ -64,7 +65,9 @@ static void SetSysClockTo_48MHz_HSE(void);
  *
  * @return  none
  */
-void SystemInit(void) {
+ void SystemInit(void) {
+  GPIO_InitTypeDef GPIOC_InitStructure = {0};
+
   RCC->CTLR |= (uint32_t)0x00000001;
   RCC->CFGR0 &= (uint32_t)0xF8FF0000;
   RCC->CTLR &= (uint32_t)0xFEF6FFFF;
@@ -75,6 +78,15 @@ void SystemInit(void) {
   RCC_AdjustHSICalibrationValue(0x10);
 
   SetSysClock();
+
+  /**
+   * Output system core clock to PC4 (MCO) 
+   */
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
+  GPIOC_InitStructure.GPIO_Pin = GPIO_Pin_4;
+  GPIOC_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+  GPIOC_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_Init(GPIOC, &GPIOC_InitStructure);
 }
 
 /*********************************************************************
